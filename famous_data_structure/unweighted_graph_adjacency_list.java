@@ -1,3 +1,7 @@
+// It is a unweighted graph
+// Implement with the help of List<List> meanse Collection of Lists of List
+// It containing various function like bfs search , dfs search , etc.
+// Most Important data structures in competitive programming.
 import java.util.List;
 import java.util.LinkedList;
 import java.util.ArrayList;

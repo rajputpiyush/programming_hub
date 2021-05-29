@@ -1,3 +1,7 @@
+// It is a famous kadane's algorithm which is written by Ulf Grenander in 1977. 
+// Time complexity of this algorithm is O(N) which makes it very fast.
+// Space complexity of this algorithm is also O(N).
+// Most Important algorithm asked by many MNC companies.
 class kadane_algorithm{
     public static void main(String args[]){
         int arr[] = {-2, 3, 4, -1, 0, -3, 2};
