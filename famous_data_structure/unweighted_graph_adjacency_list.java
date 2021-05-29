@@ -10,17 +10,19 @@ import java.util.Stack;
 import java.util.Arrays;
 public class unweighted_graph_adjacency_list{
     public static void main(String args[]){
-        unweighted_graph graph = new unweighted_graph(4);
-        graph.add_bidirectional(0 , 1);
-        graph.add_bidirectional(1 , 2);
-        graph.add_bidirectional(2 , 3);
-        graph.add_bidirectional(0 , 3);
+        unweighted_graph graph = new unweighted_graph(5);
+        graph.add_undirected(0 , 1);
+        graph.add_undirected(0 , 2);
+        graph.add_undirected(1 , 3);
+        graph.add_undirected(1 , 4);
+        // graph.add_undirected(3 , 4);
         System.out.println("This is dfs search using graph");
         System.out.println();
         graph.dfs(0);
-        System.out.println("This is bfs seach using graph");
-        System.out.println();
-        graph.bfs(0);
+        System.out.println(graph.cycle_detection_directed_graph());
+        // System.out.println("This is bfs seach using graph");
+        // System.out.println();
+        // graph.bfs(0);
     }
 }
 final class unweighted_graph{ // this class is a final class which can't be inherited
@@ -35,10 +37,10 @@ final class unweighted_graph{ // this class is a final class which can't be inhe
             graph.add(i , new ArrayList<Integer>());
         }
     }
-    public void add_undirectional(int source , int destination){  // this is used to add undirected graph
+    public void add_directed(int source , int destination){  // this is used to add undirected graph
         graph.get(source).add(destination);
     } 
-    public void add_bidirectional(int source , int destination){ // this is used to add directed graph
+    public void add_undirected(int source , int destination){ // this is used to add directed graph
         graph.get(source).add(destination); 
         graph.get(destination).add(source);
     }
@@ -80,6 +82,36 @@ final class unweighted_graph{ // this class is a final class which can't be inhe
             }
         }
 
+    }
+    public boolean cycle_detection_directed_graph(){
+        for(int i = 0;i < nodes; i++){ // we check every node because we can't know that all the graphs are connected or dissconnected
+            int helper [] = new int[nodes];
+            Arrays.fill(helper , -1);
+            if(cycle_detection(helper, i)){
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean cycle_detection(int helper[] , int source){
+        Queue<Integer> queue = new LinkedList<Integer>();
+        queue.add(source);
+        helper[source] = 0;
+        while(!queue.isEmpty()){
+            Integer pop = queue.poll();
+            helper[pop] = 1;
+            List<Integer> list  = graph.get(pop);
+            for(Integer child : list){
+                if(helper[child] == 0){
+                    return true;
+                }
+                if(helper[child] == -1){
+                    queue.add(child);
+                    helper[child] = 0;
+                }
+            }
+        }
+        return false;
     }
     
 }
