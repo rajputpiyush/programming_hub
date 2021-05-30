@@ -10,16 +10,16 @@ import java.util.Stack;
 import java.util.Arrays;
 public class unweighted_graph_adjacency_list{
     public static void main(String args[]){
-        unweighted_graph graph = new unweighted_graph(5);
+        unweighted_graph graph = new unweighted_graph(4);
         graph.add_undirected(0 , 1);
-        graph.add_undirected(0 , 2);
-        graph.add_undirected(1 , 3);
-        graph.add_undirected(1 , 4);
+        graph.add_undirected(1 , 2);
+        graph.add_undirected(2 , 3);
+        // graph.add_undirected(1 , 4);
         // graph.add_undirected(3 , 4);
         System.out.println("This is dfs search using graph");
         System.out.println();
-        graph.dfs(0);
-        System.out.println(graph.cycle_detection_directed_graph());
+        // graph.dfs(0);
+        System.out.println(graph.cycle_detection_directed_graph_using_dfs());
         // System.out.println("This is bfs seach using graph");
         // System.out.println();
         // graph.bfs(0);
@@ -83,17 +83,17 @@ final class unweighted_graph{ // this class is a final class which can't be inhe
         }
 
     }
-    public boolean cycle_detection_directed_graph(){
+    public boolean cycle_detection_directed_graph_using_bfs(){
         for(int i = 0;i < nodes; i++){ // we check every node because we can't know that all the graphs are connected or dissconnected
             int helper [] = new int[nodes];
             Arrays.fill(helper , -1);
-            if(cycle_detection(helper, i)){
+            if(cycle_detection_directed_graph_using_bfs(helper, i)){
                 return true;
             }
         }
         return false;
     }
-    public boolean cycle_detection(int helper[] , int source){
+    private boolean cycle_detection_directed_graph_using_bfs(int helper[] , int source){
         Queue<Integer> queue = new LinkedList<Integer>();
         queue.add(source);
         helper[source] = 0;
@@ -113,5 +113,32 @@ final class unweighted_graph{ // this class is a final class which can't be inhe
         }
         return false;
     }
-    
+    public boolean cycle_detection_directed_graph_using_dfs(){
+        Arrays.fill(visited , false);
+        for(int i = 0; i< nodes; i++){
+            if(cycle_detection_directed_graph_using_dfs(i , visited)){
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean cycle_detection_directed_graph_using_dfs(int source , boolean visited []){
+        Stack<Integer> stack = new Stack<Integer>();
+        stack.push(source);
+        visited[source] = true;
+        while(!stack.isEmpty()){
+            Integer pop = stack.pop();
+            List<Integer> list = graph.get(pop);
+            for(Integer child : list){
+                if(visited[child] && child != pop ){
+                    return true;
+                }
+                if(!visited[child]){
+                    stack.push(child);
+                    visited[child] = true;
+                }               
+            }           
+        }
+        return false;
+    }
 }
